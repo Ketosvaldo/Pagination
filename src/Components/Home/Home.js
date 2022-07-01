@@ -1,5 +1,5 @@
 import React from 'react';
-import List from '../Character/List';
+import List from '../Character2/List';
 
 function Home(props) {
     return (

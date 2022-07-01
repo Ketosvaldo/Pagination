@@ -1,14 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import Character from './Character';
-import Pagination from './Pagination';
+import * as React from 'react';
+import Pagination from '@mui/material/Pagination';
+import './styles.css';
 
 export default function List() {
     const [characters, setCharacter] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const [currentPageUrl, setCurrentPageUrl] = useState("https://rickandmortyapi.com/api/character");
-    const [nextPageUrl, setNextPageUrl] = useState();
-    const [prevPageUrl, setPrevPageUrl] = useState();
     const [pages, setPages] = useState();
     useEffect(() => {
         const url = currentPageUrl;
@@ -19,29 +19,20 @@ export default function List() {
             setCharacter(results);
             setLoading(false);
 
-            setNextPageUrl(info.next);
-            setPrevPageUrl(info.prev);
             setPages(info.pages);
         }
 
         fetchData();
     }, [currentPageUrl]);
 
-    const nextPage = () => {
-        setCurrentPageUrl(nextPageUrl);
-    }
-
-    const prevPage = () => {
-        setCurrentPageUrl(prevPageUrl);
-    }
-
-    const goToPage = (num) => {
-        setCurrentPageUrl(`https://rickandmortyapi.com/api/character?page=${num}`);
+    const handleOnChange = (event, value) => {
+        setCurrentPageUrl(`https://rickandmortyapi.com/api/character?page=${value}`)
     }
 
     return (
         <div>
             <h2>Characters</h2>
+            <Pagination count={pages} size="large" onChange={handleOnChange} className="pagination"/>
             <div className="row">
                 {
                 loading ? (
@@ -58,14 +49,7 @@ export default function List() {
                     />
                 )))
                 }
-            </div>
-            <div>
-                <Pagination 
-                    nextPage={nextPage}
-                    prevPage={prevPage}
-                    goToPage={goToPage}
-                    pages={pages}
-                />
+                <Pagination count={pages} size="large" onChange={handleOnChange} className="pagination"/>
             </div>
         </div>
     )
